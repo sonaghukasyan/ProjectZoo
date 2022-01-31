@@ -8,8 +8,6 @@ namespace ZooProject
     {
         static void Main(string[] args)
         {
-
-            Logger logger = Logger.GetOrSetLogger();
             UIConsole console = new UIConsole();
             console.Start();
         }
