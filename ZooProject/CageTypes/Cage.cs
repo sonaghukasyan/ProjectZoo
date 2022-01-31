@@ -1,35 +1,45 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using ZooProject.FileLogger;
 using ZooProject.Types;
 
 namespace ZooProject.CageTypes
 {
     public abstract class Cage
     {
-        public List<Animal> Animals { get; set; }
+        protected List<Animal> Animals { get; set; }
         public AnimalType AnimalType { get; set; }
-        protected string CageCode { get; set; }
-        protected List<FeedTypes> Menu { get; set; }
+        protected string _cageCode { get; set; }
+        protected List<FeedTypes> _menu { get; set; }
+
+        public event Action<FeedTypes> FoodArived;
+        protected Logger _logger { get; set; }
+
+
+        public void AddAnimal(Animal animal)
+        {
+            this.Animals.Add(animal);
+            animal.SetCage(this);
+        }
 
         public bool CheckCageCode(string cageCode)
         {
-            return cageCode == this.CageCode;
+            return cageCode == this._cageCode;
         }
         public void LeaveFood()
         {
             foreach(Animal animal in Animals)
             {
+                _logger.Info("Food arrived.");
                 try
                 {
-                    animal.Feed(this.Menu[0]);
+                    FoodArived?.Invoke(_menu[0]);
                 }
                 catch(Exception ex)
                 {
-                    Console.WriteLine(ex.Message);
+                    _logger.Error(ex.Message);
                 }
+                
             }
         }
     }

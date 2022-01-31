@@ -1,9 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Timers;
+using ZooProject.FileLogger;
 using ZooProject.UI;
 
 namespace ZooProject
@@ -12,6 +8,8 @@ namespace ZooProject
     {
         static void Main(string[] args)
         {
+
+            Logger logger = Logger.GetOrSetLogger();
             UIConsole console = new UIConsole();
             console.Start();
         }

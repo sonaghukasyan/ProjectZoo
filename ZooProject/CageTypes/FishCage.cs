@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using ZooProject.Types;
 
 namespace ZooProject.CageTypes
@@ -13,8 +9,9 @@ namespace ZooProject.CageTypes
         {
             this.Animals = new List<Animal>();
             this.AnimalType = AnimalType.fish;
-            this.CageCode = code;
-            this.Menu = new List<FeedTypes>() { Types.FeedTypes.larvae, Types.FeedTypes.crustaceans };
+            this._cageCode = code;
+            this._menu = new List<FeedTypes>() { Types.FeedTypes.larvae, Types.FeedTypes.crustaceans };
+            this._logger = FileLogger.Logger.GetOrSetLogger();
         }
     }
 }

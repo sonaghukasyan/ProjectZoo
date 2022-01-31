@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using ZooProject.CageTypes;
+using ZooProject.FileLogger;
 using ZooProject.Logic;
 using ZooProject.Types;
 
@@ -11,11 +9,13 @@ namespace ZooProject.UI
 {
     class UIConsole
     {
-        private Worker Worker { get; set; }
+        private Logger _logger { get; set; }
+        private Worker _worker { get; set; }
 
         public UIConsole()
         {
-            this.Worker = new Worker();
+            this._worker = new Worker();
+            _logger = Logger.GetOrSetLogger();
         }
 
         public void Start()
@@ -50,16 +50,17 @@ namespace ZooProject.UI
             string cageCode = Console.ReadLine();
             try
             {
-                 Worker.GetCage(cageCode);
+                _worker.GetCage(cageCode);
             }
             catch (Exception ex)
             {
                 Console.Clear();
                 Console.WriteLine(ex.Message);
+                _logger.Error(ex);
                 SeeCage();
             }
 
-            Cage cage = Worker.GetCage(cageCode);
+            Cage cage = _worker.GetCage(cageCode);
             Console.WriteLine(" E.Edit Cage    Esc.Back");
             ConsoleKey key = Console.ReadKey().Key;
 
@@ -96,7 +97,7 @@ namespace ZooProject.UI
             }
             Console.Clear();
 
-            Worker.AddCage(cage);
+            _worker.AddCage(cage);
             EditCage(cage);
         }
 
@@ -123,7 +124,7 @@ namespace ZooProject.UI
                 }
             }
 
-            Worker.EditCage(cage, animals);
+            _worker.EditCage(cage, animals);
         }
 
         public Animal AddAnimal(Cage cage)
@@ -145,14 +146,15 @@ namespace ZooProject.UI
                     break;
             }
             Console.Clear();
-                
+
             try
             {
                 CheckAnimalType(cage, animalType);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 Console.WriteLine(ex.Message);
+                _logger.Error(ex);
                 AddAnimal(cage);
             }
 
@@ -180,80 +182,15 @@ namespace ZooProject.UI
 
             return animal;
         }
-     
+
 
         public void CheckAnimalType(Cage cage, AnimalType animalType)
         {
-            if(cage.AnimalType == animalType)
+            if (cage.AnimalType == animalType)
             {
                 return;
             }
             throw new Exception("This cage cannot contain that type of animals.");
         }
-        /*
-         public void FeedAnimal()
-         {
-            Console.Write("Code: ");
-            string code = Console.ReadLine();
-            
-            try
-            {
-                 Worker.GetAnimal(code);
-            }
-            catch(Exception ex)
-            {
-                Console.WriteLine(ex.Message);
-                FeedAnimal();
-            }
-
-            Animal animal = Worker.GetAnimal(code);
-            Console.WriteLine("Which food you prefer?");
-            Console.WriteLine("A.cereal  B.meat  C.dryFood D.meat  E.dryFood F.larva  G.crustaceans");
-
-
-            FeedTypes feed;
-            ConsoleKey key = Console.ReadKey().Key;
-            
-            if (key == ConsoleKey.A)
-            {
-                feed = FeedTypes.cereal;
-            }
-            else if (key == ConsoleKey.B || key == ConsoleKey.D)
-            {
-                feed = FeedTypes.meat;
-            }
-            else if (key == ConsoleKey.C || key == ConsoleKey.E)
-            {
-                feed = FeedTypes.dryFood;
-            }
-            else if (key == ConsoleKey.F)
-            {
-                feed = FeedTypes.larvae;
-            }
-            else if (key == ConsoleKey.G)
-            {
-                feed = FeedTypes.crustaceans;
-            }
-            else
-            {
-                feed = FeedTypes.dryFood;
-            }
-
-            Console.Clear();
-
-            try
-            {
-                animal.Feed(feed);
-                Console.WriteLine("Done");
-                Start();
-            }
-            catch(Exception ex)
-            {
-                Console.WriteLine(ex.Message);
-                FeedAnimal();
-            }
-        }
-        */
-
     }
 }

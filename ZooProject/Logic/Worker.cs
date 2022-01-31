@@ -1,20 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Timers;
 using ZooProject.CageTypes;
+using ZooProject.FileLogger;
 using ZooProject.Types;
 
 namespace ZooProject.Logic
 {
     class Worker
     {
-        private Zoo Zoo { get; set; }
+        private Zoo _zoo { get; set; }
         public Worker()
         {
-            this.Zoo = new Zoo();
+            this._zoo = new Zoo();
         }
 
         public void FeedAnimals()
@@ -27,30 +25,30 @@ namespace ZooProject.Logic
 
             void Timer_Elapsed(object sender, ElapsedEventArgs e)
             {
-                for(int i = 0; i < Zoo.Cages.Count; i++)
+                for (int i = 0; i < _zoo.Cages.Count; i++)
                 {
-                    Zoo.Cages[i].LeaveFood();
+                    _zoo.Cages[i].LeaveFood();
                 }
             }
         }
 
         public void AddCage(Cage cage)
         {
-            Zoo.Cages.Add(cage);
+            _zoo.Cages.Add(cage);
             FeedAnimals();
         }
 
         public void EditCage(Cage cage, List<Animal> animals)
         {
-            for(int i = 0; i < animals.Count; i++)
+            for (int i = 0; i < animals.Count; i++)
             {
-                cage.Animals.Add(animals[i]);
+                cage.AddAnimal(animals[i]);
             }
         }
 
         public Cage GetCage(string code)
         {
-            foreach (Cage cage in Zoo.Cages)
+            foreach (Cage cage in _zoo.Cages)
             {
                 if (cage.CheckCageCode(code))
                 {

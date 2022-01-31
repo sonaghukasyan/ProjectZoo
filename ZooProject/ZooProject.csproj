@@ -48,6 +48,8 @@
     <Compile Include="CageTypes\DogCage.cs" />
     <Compile Include="CageTypes\FishCage.cs" />
     <Compile Include="CageTypes\LionCage.cs" />
+    <Compile Include="FileLogger\ILogger.cs" />
+    <Compile Include="FileLogger\Logger.cs" />
     <Compile Include="Logic\Worker.cs" />
     <Compile Include="Logic\Zoo.cs" />
     <Compile Include="Program.cs" />
