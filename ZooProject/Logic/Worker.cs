@@ -27,7 +27,12 @@ namespace ZooProject.Logic
             {
                 for (int i = 0; i < _zoo.Cages.Count; i++)
                 {
-                    _zoo.Cages[i].LeaveFood();
+
+                    if (_zoo.Cages[i].Animals.Count != 0 && _zoo.Cages[i].FoodWeight <= (_zoo.Cages[i].MaxWeight) / 2)
+                    {
+                        _zoo.Cages[i].LeaveFood();
+                    }
+                        
                 }
             }
         }

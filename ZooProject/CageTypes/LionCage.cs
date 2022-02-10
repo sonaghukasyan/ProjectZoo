@@ -10,7 +10,9 @@ namespace ZooProject.CageTypes
             this.Animals = new List<Animal>();
             this.AnimalType = AnimalType.lion;
             this._cageCode = code;
-            this._menu = new List<FeedTypes>() { Types.FeedTypes.meat, Types.FeedTypes.dryFood };
+            this.Food = FeedTypes.meat;
+            this.FoodWeight = 0;
+            this.MaxWeight = 1000;
             this._logger = FileLogger.Logger.GetOrSetLogger();
         }
     }
