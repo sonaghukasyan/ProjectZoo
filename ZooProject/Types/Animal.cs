@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading;
 using System.Timers;
 using ZooProject.CageTypes;
 using ZooProject.FileLogger;
@@ -57,6 +58,7 @@ namespace ZooProject.Types
             }
 
             this.State();
+
             if (this.IsAlive == false)
             {
                 throw new Exception($"{this.Type} with code {this._code} is dead and cannot eat.");
@@ -83,17 +85,40 @@ namespace ZooProject.Types
         public virtual void GetHungry()
         {
             this.State();
-            Timer timer = new Timer(TimeSpan.FromSeconds(this._seconds).TotalMilliseconds);
 
-            timer.AutoReset = true;
-            timer.Elapsed += Timer_Elapsed;
-            timer.Start();
+            Thread thread = new Thread(new ThreadStart(Hungry));
+            thread.Start();
+
+            //Timer timer = new Timer(TimeSpan.FromSeconds(this._seconds).TotalMilliseconds);
+
+            //timer.AutoReset = true;
+            //timer.Elapsed += Timer_Elapsed;
+            //timer.Start();
 
 
-            void Timer_Elapsed(object sender, ElapsedEventArgs e)
+            //void Timer_Elapsed(object sender, ElapsedEventArgs e)
+            //{
+            //    this._stomach -= this._stomachDelta;
+            //    this.Feed(this.Cage.Food);
+            //}
+        }
+        
+        public void Hungry()
+        {
+            while (true)
             {
+                Thread.Sleep(this._seconds*1000);
                 this._stomach -= this._stomachDelta;
-                this.Feed(this.Cage.Food);
+                try
+                {
+                    Feed(this.Cage.Food);
+                }
+                catch (Exception ex)
+                {
+                    _logger.Error(ex);
+             
+                }
+                Console.WriteLine($"animal got hungry");
             }
         }
 

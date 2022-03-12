@@ -49,7 +49,6 @@
     <Compile Include="CageTypes\FishCage.cs" />
     <Compile Include="CageTypes\FoodArrivedArgs.cs" />
     <Compile Include="CageTypes\LionCage.cs" />
-    <Compile Include="CodeCheck.cs" />
     <Compile Include="FileLogger\ILogger.cs" />
     <Compile Include="FileLogger\Logger.cs" />
     <Compile Include="Logic\Worker.cs" />

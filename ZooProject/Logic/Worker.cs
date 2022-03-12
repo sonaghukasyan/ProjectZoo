@@ -1,5 +1,6 @@
-﻿using System;
+﻿ using System;
 using System.Collections.Generic;
+using System.Threading;
 using System.Timers;
 using ZooProject.CageTypes;
 using ZooProject.FileLogger;
@@ -17,14 +18,15 @@ namespace ZooProject.Logic
 
         public void FeedAnimals()
         {
-            Timer timer = new Timer(TimeSpan.FromSeconds(10).TotalMilliseconds);
+            Thread thread = new Thread(new ThreadStart(Feed));
+            thread.Start();
+        }
 
-            timer.AutoReset = true;
-            timer.Elapsed += Timer_Elapsed;
-            timer.Start();
-
-            void Timer_Elapsed(object sender, ElapsedEventArgs e)
+        public void Feed()
+        {
+            while (true)
             {
+                Thread.Sleep(10000);
                 for (int i = 0; i < _zoo.Cages.Count; i++)
                 {
 
@@ -32,7 +34,6 @@ namespace ZooProject.Logic
                     {
                         _zoo.Cages[i].LeaveFood();
                     }
-                        
                 }
             }
         }

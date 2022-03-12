@@ -5,9 +5,9 @@ using ZooProject.Types;
 
 namespace ZooProject.CageTypes
 {
+    
     public abstract class Cage
     {
-       
         public List<Animal> Animals { get; set; }
         public AnimalType AnimalType { get; set; }
         protected string _cageCode { get; set; }
