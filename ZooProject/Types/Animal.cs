@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using System.Timers;
 using ZooProject.CageTypes;
@@ -52,10 +53,6 @@ namespace ZooProject.Types
        
         public virtual void Feed(FeedTypes food)
         {
-            if(this.Cage.FoodWeight < this._stomach)
-            {
-                throw new Exception("No food to eat.");
-            }
 
             this.State();
 
@@ -67,19 +64,24 @@ namespace ZooProject.Types
             {
                 throw new Exception($" This {this.Type}  with code {this._code} is not hungry.");
             }
-
-            for (int i = 0; i < this.FeedTypes.Count; i++)
+            else if (this.Cage.FoodWeight < this._stomach)
             {
-                if (FeedTypes[i] == food)
-                {
-                    this.Cage.FoodWeight -=  this._maxSize - this._stomach;
-                    this._stomach = this._maxSize;
-                    
-                    _logger.Info($" This {this.Type}  with code {this._code} successfuly ate.");
-                    return;
-                }
+                throw new Exception("No food to eat.");
             }
-            throw new Exception($"Not suitable food for {this.Type}.");
+
+            try
+            {
+                FeedTypes feed = this.FeedTypes.Where(f => f == food).First();
+                this.Cage.FoodWeight -= this._maxSize - this._stomach;
+                this._stomach = this._maxSize;
+
+                _logger.Info($" This {this.Type}  with code {this._code} successfuly ate.");
+            }
+            catch
+            {
+
+                throw new Exception($"Not suitable food for {this.Type}.");
+            }
         }
 
         public virtual void GetHungry()
@@ -116,9 +118,7 @@ namespace ZooProject.Types
                 catch (Exception ex)
                 {
                     _logger.Error(ex);
-             
                 }
-                Console.WriteLine($"animal got hungry");
             }
         }
 

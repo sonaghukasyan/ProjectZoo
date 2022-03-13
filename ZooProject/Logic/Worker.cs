@@ -1,9 +1,7 @@
-﻿ using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Threading;
-using System.Timers;
 using ZooProject.CageTypes;
-using ZooProject.FileLogger;
 using ZooProject.Types;
 
 namespace ZooProject.Logic
